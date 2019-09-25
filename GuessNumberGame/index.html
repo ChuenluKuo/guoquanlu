@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>猜数字游戏</title>
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- 生产环境中不建议使用 -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="example"></div>
+
+</body>
+
+</html>
+
+<script type="text/babel">
+   class GuessNumber extends React.Component {
+       constructor(props){
+           super(props);
+           this.state = {value:"",random:Math.ceil(Math.random() * 100),resultStr:""}; 
+           this.handleChange = this.handleChange.bind(this);
+           this.compareNumber = this.compareNumber.bind(this);
+           this.resetNumber = this.resetNumber.bind(this);
+       }
+
+       handleChange(event){
+           this.setState({
+               value:event.target.value
+           });
+       }
+
+       compareNumber(event){
+         const value = Number(this.state.value);
+         var str = "";
+         if (value == this.state.random) {
+             str = "猜对了";
+         }
+
+         if (value > this.state.random) {
+             str = "大了";
+         }
+
+         if (value < this.state.random) {
+             str = "小了";
+         }
+
+         this.setState({
+                 resultStr:str
+             });
+       }
+
+       resetNumber(event){
+        this.setState({
+               value:"",
+               random:Math.ceil(Math.random() * 100),
+               resultStr:""
+           });
+       }
+
+       render(){
+           var value = this.state.value;
+           const result = this.state.resultStr;
+           return (
+            <div>
+             <input type="text" value={value} onChange={this.handleChange}></input>
+             <h4>{result}</h4>
+             <button onClick={this.compareNumber}>对比</button>    
+             <button onClick={this.resetNumber}>重置</button>   
+           </div> 
+           );  
+       }
+   }
+
+   ReactDOM.render(
+       <GuessNumber />,
+       document.getElementById('example')
+   );
+</script>
